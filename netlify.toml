@@ -5,7 +5,10 @@
 
 
 [functions]
-  external_node_modules = ["express"]
+  # Bundle dependencies like express into the function package so runtime
+  # has access to them. Removing `external_node_modules` tells Netlify to
+  # let the bundler include these dependencies rather than expecting them
+  # to be present at runtime (which caused the 'Cannot find module express' error).
   node_bundler = "esbuild"
   
 [[redirects]]
