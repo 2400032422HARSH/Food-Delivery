@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: harsh-anand-food-delivery
+    name: anand-food-delivery
     runtime: node
     plan: free
     buildCommand: npm install --include=dev && npm run build
