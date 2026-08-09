@@ -131,4 +131,32 @@ export const dashboardApi = {
   getRestaurantStats: () => apiCall<any>("GET", "/restaurant/stats"),
 };
 
+// Admin APIs (Mock implementations until server is ready)
+export const adminApi = {
+  // Users
+  getUsers: () => apiCall<any[]>("GET", "/admin/users"),
+  updateUserStatus: (id: string, status: "active" | "blocked") =>
+    apiCall<any>("PATCH", `/admin/users/${id}/status`, { status }),
+
+  // Restaurants
+  getRestaurants: () => apiCall<any[]>("GET", "/admin/restaurants"),
+  updateRestaurantStatus: (
+    id: string,
+    status: "pending" | "approved" | "rejected" | "blocked"
+  ) => apiCall<any>("PATCH", `/admin/restaurants/${id}/status`, { status }),
+  updateRestaurantDetails: (id: string, data: any) =>
+    apiCall<any>("PUT", `/admin/restaurants/${id}`, data),
+
+  // Coupons
+  getCoupons: () => apiCall<any[]>("GET", "/admin/coupons"),
+  createCoupon: (data: any) => apiCall<any>("POST", "/admin/coupons", data),
+  updateCoupon: (id: string, data: any) =>
+    apiCall<any>("PUT", `/admin/coupons/${id}`, data),
+  deleteCoupon: (id: string) => apiCall<any>("DELETE", `/admin/coupons/${id}`),
+
+  // Reports
+  getAdvancedReports: (cityFilter?: string, timeFilter?: string) =>
+    apiCall<any>("GET", "/admin/reports", { cityFilter, timeFilter }), // Might need query params normally, mocking for now
+};
+
 export { getAuthToken, setAuthToken };

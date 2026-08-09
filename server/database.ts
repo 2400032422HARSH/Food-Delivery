@@ -285,6 +285,147 @@ class Database {
       restaurant.menu.push(menuItem);
     });
 
+    // Seed more restaurants
+    const extraRestaurants: RestaurantProfile[] = [
+      {
+        id: "burger-joint",
+        ownerId: "rest-owner-1",
+        name: "Burger Joint",
+        cuisines: ["American", "Fast Food"],
+        image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?w=600&h=400&fit=crop",
+        rating: 4.2,
+        reviews: 856,
+        deliveryTime: 25,
+        deliveryFee: 30,
+        minOrder: 150,
+        isOpen: true,
+        address: "45 Main St, City Center",
+        city: "Bangalore",
+        phone: "9876543212",
+        openingHours: "10:00 AM",
+        closingHours: "11:00 PM",
+        offers: ["Free Fries on orders above ₹200"],
+        menu: [],
+      },
+      {
+        id: "pizza-heaven",
+        ownerId: "rest-owner-1",
+        name: "Pizza Heaven",
+        cuisines: ["Italian", "Pizza"],
+        image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&h=400&fit=crop",
+        rating: 4.7,
+        reviews: 2100,
+        deliveryTime: 40,
+        deliveryFee: 50,
+        minOrder: 300,
+        isOpen: true,
+        address: "78 Oak Avenue",
+        city: "Bangalore",
+        phone: "9876543213",
+        openingHours: "12:00 PM",
+        closingHours: "12:00 AM",
+        offers: ["20% off on all Pizzas"],
+        menu: [],
+      },
+      {
+        id: "sushi-master",
+        ownerId: "rest-owner-1",
+        name: "Sushi Master",
+        cuisines: ["Japanese", "Sushi"],
+        image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&h=400&fit=crop",
+        rating: 4.9,
+        reviews: 540,
+        deliveryTime: 45,
+        deliveryFee: 80,
+        minOrder: 500,
+        isOpen: false,
+        address: "9th Block Sushi St",
+        city: "Bangalore",
+        phone: "9876543214",
+        openingHours: "5:00 PM",
+        closingHours: "11:00 PM",
+        offers: [],
+        menu: [],
+      },
+      {
+        id: "healthy-bites",
+        ownerId: "rest-owner-1",
+        name: "Healthy Bites",
+        cuisines: ["Healthy Food", "Salads"],
+        image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&h=400&fit=crop",
+        rating: 4.5,
+        reviews: 320,
+        deliveryTime: 20,
+        deliveryFee: 20,
+        minOrder: 100,
+        isOpen: true,
+        address: "Wellness Park, Phase 1",
+        city: "Bangalore",
+        phone: "9876543215",
+        openingHours: "8:00 AM",
+        closingHours: "9:00 PM",
+        offers: ["Loyalty Points available"],
+        menu: [],
+      },
+      {
+        id: "south-spice",
+        ownerId: "rest-owner-1",
+        name: "South Spice",
+        cuisines: ["South Indian"],
+        image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=600&h=400&fit=crop",
+        rating: 4.4,
+        reviews: 1800,
+        deliveryTime: 30,
+        deliveryFee: 15,
+        minOrder: 50,
+        isOpen: true,
+        address: "Indiranagar 100ft road",
+        city: "Bangalore",
+        phone: "9876543216",
+        openingHours: "7:00 AM",
+        closingHours: "10:00 PM",
+        offers: ["Breakfast combo at ₹99"],
+        menu: [],
+      }
+    ];
+
+    const extraMenuData: Record<string, Omit<MenuItem, "id" | "restaurantId">[]> = {
+      "burger-joint": [
+        { name: "Classic Cheeseburger", description: "Juicy beef patty with cheese", price: 150, category: "Burgers", isVeg: false, image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=300&fit=crop", preparationTime: 10, isAvailable: true },
+        { name: "Veggie Burger", description: "Plant-based patty with lettuce", price: 130, category: "Burgers", isVeg: true, image: "https://images.unsplash.com/photo-1520072959219-c595dc870360?w=400&h=300&fit=crop", preparationTime: 10, isAvailable: true },
+        { name: "French Fries", description: "Crispy golden fries", price: 80, category: "Sides", isVeg: true, image: "https://images.unsplash.com/photo-1573080496159-009ab97ea80f?w=400&h=300&fit=crop", preparationTime: 5, isAvailable: true },
+      ],
+      "pizza-heaven": [
+        { name: "Margherita Pizza", description: "Classic cheese and tomato", price: 299, category: "Pizza", isVeg: true, image: "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=400&h=300&fit=crop", preparationTime: 20, isAvailable: true },
+        { name: "Pepperoni Pizza", description: "Loaded with pepperoni", price: 399, category: "Pizza", isVeg: false, image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400&h=300&fit=crop", preparationTime: 20, isAvailable: true },
+      ],
+      "sushi-master": [
+        { name: "California Roll", description: "Crab, avocado, and cucumber", price: 450, category: "Sushi", isVeg: false, image: "https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400&h=300&fit=crop", preparationTime: 15, isAvailable: true },
+        { name: "Spicy Tuna Roll", description: "Tuna with spicy mayo", price: 500, category: "Sushi", isVeg: false, image: "https://images.unsplash.com/photo-1553621042-f6e147245754?w=400&h=300&fit=crop", preparationTime: 15, isAvailable: true },
+      ],
+      "healthy-bites": [
+        { name: "Quinoa Salad", description: "Fresh greens with quinoa", price: 250, category: "Salads", isVeg: true, image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&h=300&fit=crop", preparationTime: 10, isAvailable: true },
+        { name: "Green Smoothie", description: "Spinach, kale, and apple", price: 150, category: "Beverages", isVeg: true, image: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=400&h=300&fit=crop", preparationTime: 5, isAvailable: true },
+      ],
+      "south-spice": [
+        { name: "Masala Dosa", description: "Crispy crepe with potato filling", price: 90, category: "Breakfast", isVeg: true, image: "https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?w=400&h=300&fit=crop", preparationTime: 10, isAvailable: true },
+        { name: "Idli Sambar", description: "Steamed rice cakes with lentil soup", price: 60, category: "Breakfast", isVeg: true, image: "https://images.unsplash.com/photo-1589301760014-d929f39ce9b0?w=400&h=300&fit=crop", preparationTime: 5, isAvailable: true },
+      ]
+    };
+
+    extraRestaurants.forEach((rest) => {
+      this.restaurants.push(rest);
+      extraMenuData[rest.id].forEach((item) => {
+        const menuItem: MenuItem = {
+          id: this.generateId("item"),
+          restaurantId: rest.id,
+          ...item,
+        };
+        this.menuItems.push(menuItem);
+        rest.menu.push(menuItem);
+      });
+    });
+
     // Seed coupons
     this.coupons = [
       {
@@ -386,6 +527,10 @@ class Database {
 
   getRestaurantByOwnerId(ownerId: string): RestaurantProfile | null {
     return this.restaurants.find((r) => r.ownerId === ownerId) || null;
+  }
+
+  getRestaurantsByOwnerId(ownerId: string): RestaurantProfile[] {
+    return this.restaurants.filter((r) => r.ownerId === ownerId);
   }
 
   updateRestaurant(

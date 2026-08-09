@@ -32,6 +32,7 @@ export interface Restaurant {
   distance: number;
   menu: MenuItem[];
   topDishes: MenuItem[];
+  status: "pending" | "approved" | "rejected" | "blocked"; // New admin status
 }
 
 export interface User {
@@ -41,6 +42,20 @@ export interface User {
   phone: string;
   addresses: Address[];
   role: "customer" | "restaurant" | "admin";
+  status: "active" | "blocked"; // New admin status
+}
+
+// New Coupon Interface
+export interface Coupon {
+  id: string;
+  code: string;
+  discountPercentage: number;
+  maxDiscount: number;
+  minOrderAmount: number;
+  validFrom: string;
+  validUntil: string;
+  isActive: boolean;
+  applicableRestaurants: string[]; // array of restaurant IDs, or empty for all
 }
 
 export interface Address {
@@ -294,6 +309,7 @@ export const mockRestaurants: Restaurant[] = [
     distance: 2.5,
     menu: menuItems.anand,
     topDishes: menuItems.anand.slice(0, 3),
+    status: "approved",
   },
   {
     id: "spice_route",
@@ -315,6 +331,7 @@ export const mockRestaurants: Restaurant[] = [
     distance: 3.2,
     menu: menuItems.spice_route,
     topDishes: menuItems.spice_route.slice(0, 2),
+    status: "approved",
   },
   {
     id: "pasta_paradise",
@@ -336,6 +353,7 @@ export const mockRestaurants: Restaurant[] = [
     distance: 4.1,
     menu: menuItems.pasta_paradise,
     topDishes: menuItems.pasta_paradise.slice(0, 2),
+    status: "blocked",
   },
   {
     id: "burger_house",
@@ -357,6 +375,7 @@ export const mockRestaurants: Restaurant[] = [
     distance: 5.3,
     menu: menuItems.burger_house,
     topDishes: menuItems.burger_house.slice(0, 2),
+    status: "pending",
   },
 ];
 
@@ -367,6 +386,7 @@ export const mockUsers: User[] = [
     email: "john@example.com",
     phone: "9876543210",
     role: "customer",
+    status: "active",
     addresses: [
       {
         id: "addr1",
@@ -378,6 +398,49 @@ export const mockUsers: User[] = [
       },
     ],
   },
+  {
+    id: "user2",
+    name: "Jane Smith",
+    email: "jane@example.com",
+    phone: "9876543211",
+    role: "customer",
+    status: "blocked",
+    addresses: [],
+  },
+  {
+    id: "admin1",
+    name: "Harsh Anand",
+    email: "admin@anand.com",
+    phone: "9999999999",
+    role: "admin",
+    status: "active",
+    addresses: [],
+  }
+];
+
+export const mockCoupons: Coupon[] = [
+  {
+    id: "C1",
+    code: "WELCOME50",
+    discountPercentage: 50,
+    maxDiscount: 100,
+    minOrderAmount: 200,
+    validFrom: new Date().toISOString(),
+    validUntil: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString(),
+    isActive: true,
+    applicableRestaurants: [],
+  },
+  {
+    id: "C2",
+    code: "FESTIVE20",
+    discountPercentage: 20,
+    maxDiscount: 200,
+    minOrderAmount: 500,
+    validFrom: new Date(Date.now() - 5 * 24 * 60 * 60 * 1000).toISOString(),
+    validUntil: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    isActive: false,
+    applicableRestaurants: ["anand", "spice_route"],
+  }
 ];
 
 export const mockOrders: Order[] = [

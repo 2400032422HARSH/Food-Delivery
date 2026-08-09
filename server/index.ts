@@ -267,8 +267,9 @@ export function createServer() {
     if (user.role === "customer") {
       orders = db.getOrdersByCustomerId(req.userId);
     } else if (user.role === "restaurant") {
-      const restaurant = db.getRestaurantByOwnerId(req.userId);
-      orders = restaurant ? db.getOrdersByRestaurantId(restaurant.id) : [];
+      const restaurants = db.getRestaurantsByOwnerId(req.userId);
+      const restaurantIds = restaurants.map(r => r.id);
+      orders = db.orders.filter(o => restaurantIds.includes(o.restaurantId));
     } else {
       orders = db.orders;
     }
@@ -335,8 +336,9 @@ export function createServer() {
       return res.status(404).json({ error: "Order not found" });
     }
 
-    const restaurant = db.getRestaurantByOwnerId(req.userId);
-    if (!restaurant || restaurant.id !== order.restaurantId) {
+    const restaurants = db.getRestaurantsByOwnerId(req.userId);
+    const ownsOrderRestaurant = restaurants.some((r) => r.id === order.restaurantId);
+    if (!ownsOrderRestaurant) {
       return res.status(403).json({ error: "Not authorized" });
     }
 
@@ -395,12 +397,13 @@ export function createServer() {
       return res.status(401).json({ error: "Not authenticated" });
     }
 
-    const restaurant = db.getRestaurantByOwnerId(req.userId);
-    if (!restaurant) {
-      return res.status(404).json({ error: "Restaurant not found" });
+    const restaurants = db.getRestaurantsByOwnerId(req.userId);
+    if (restaurants.length === 0) {
+      return res.status(404).json({ error: "Restaurants not found" });
     }
 
-    const orders = db.getOrdersByRestaurantId(restaurant.id);
+    const restaurantIds = restaurants.map((r) => r.id);
+    const orders = db.orders.filter((o) => restaurantIds.includes(o.restaurantId));
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
